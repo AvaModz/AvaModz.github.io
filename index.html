@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R-USA MockGov</title>
+    <title>rUSA MockGov</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Times New Roman', serif;
         }
 
         :root {
@@ -18,53 +20,115 @@
             --crimson: #981e32;
             --gold: #d4af37;
             --simulation-blue: #1c2e4a;
+            --paper: #ffffff;
+            --paper-alt: #f5f7fa;
+            --ink: #10233b;
+            --muted-border: rgba(0, 34, 68, 0.12);
+            --shadow-soft: 0 10px 30px rgba(10, 25, 47, 0.08);
+            --shadow-card: 0 12px 28px rgba(0, 34, 68, 0.10);
+            --transition: 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background: #f8f9fa;
-            line-height: 1.6;
+            background:
+                linear-gradient(to bottom, rgba(255,255,255,0.92), rgba(248,249,250,0.96)),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(0,34,68,0.02) 0,
+                    rgba(0,34,68,0.02) 1px,
+                    transparent 1px,
+                    transparent 120px
+                );
+            color: var(--ink);
+            line-height: 1.7;
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4 {
+            line-height: 1.25;
         }
 
         .simulation-banner {
-            background: var(--simulation-blue);
+            background: linear-gradient(90deg, #142843 0%, var(--simulation-blue) 50%, #142843 100%);
             color: white;
-            padding: 0.5rem;
+            padding: 0.75rem 1rem;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
             border-bottom: 3px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .simulation-banner::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.14) 45%, transparent 70%);
+            transform: translateX(-100%);
+            animation: bannerSweep 6s linear infinite;
         }
 
         .seal-header {
             text-align: center;
-            padding: 2rem 0;
-            background: linear-gradient(to bottom, #f8f9fa 60%, #e9ecef 100%);
+            padding: 3rem 1.5rem 2.5rem;
+            background:
+                radial-gradient(circle at top, rgba(212,175,55,0.10), transparent 35%),
+                linear-gradient(to bottom, #f8f9fa 55%, #eef2f6 100%);
+            border-bottom: 1px solid rgba(0,34,68,0.08);
+            animation: fadeUp 0.9s ease both;
         }
 
         .official-seal {
             width: 200px;
             height: 200px;
-            border: 3px solid var(--navy);
+            border: 4px solid var(--navy);
             border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            margin-bottom: 1rem;
+            box-shadow:
+                0 0 0 8px rgba(255,255,255,0.9),
+                0 14px 30px rgba(0,0,0,0.12);
+            margin-bottom: 1.25rem;
+            transition: transform var(--transition), box-shadow var(--transition);
+            background: white;
+        }
+
+        .official-seal:hover {
+            transform: translateY(-4px) scale(1.015);
+            box-shadow:
+                0 0 0 8px rgba(255,255,255,0.95),
+                0 18px 36px rgba(0,0,0,0.16);
         }
 
         .main-title {
             color: var(--simulation-blue);
-            font-size: 2.5rem;
+            font-family: 'Merriweather', serif;
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
             letter-spacing: -1px;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.8);
         }
 
         .subtitle {
             color: var(--navy);
-            font-size: 1.2rem;
-            margin-top: 0.5rem;
+            font-size: 1.08rem;
+            margin-top: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
 
         .nav-container {
-            background: var(--simulation-blue);
-            padding: 1rem 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: rgba(28, 46, 74, 0.96);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.25rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
         .main-nav {
@@ -73,26 +137,36 @@
             display: flex;
             gap: 2rem;
             justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-link {
             color: white;
             text-decoration: none;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 1.3px;
             position: relative;
+            padding: 0.35rem 0.25rem;
+            transition: color var(--transition), transform var(--transition);
         }
 
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: -4px;
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--gold);
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, var(--gold), #f0d77a);
+            transition: width var(--transition);
+        }
+
+        .nav-link:hover {
+            color: #f6e7a8;
+            transform: translateY(-1px);
         }
 
         .nav-link:hover::after {
@@ -102,76 +176,422 @@
         .content-section {
             max-width: 1200px;
             margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--simulation-blue);
+            padding: 2.2rem;
+            background: rgba(255,255,255,0.92);
+            border-radius: 14px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--muted-border);
+            border-left: 5px solid var(--simulation-blue);
+            backdrop-filter: blur(6px);
+            animation: fadeUp 0.8s ease both;
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+
+        .content-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(0, 34, 68, 0.11);
+        }
+
+        .content-section h2 {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(1.6rem, 2vw, 2rem);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.35rem;
+        }
+
+        .content-section h2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 72%;
+            height: 3px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--gold), transparent);
         }
 
         .discord-cta {
-            background: var(--simulation-blue);
+            background:
+                linear-gradient(135deg, rgba(28,46,74,0.98), rgba(0,34,68,0.96)),
+                url('images/whitehouse.png');
             color: white;
-            padding: 2rem;
+            padding: 3rem 1.5rem;
             text-align: center;
-            margin: 3rem 0;
+            margin: 3rem 0 0;
+            position: relative;
+            overflow: hidden;
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .discord-cta::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.08) 45%, transparent 65%);
+            transform: translateX(-100%);
+            animation: ctaSweep 7s linear infinite;
+            pointer-events: none;
+        }
+
+        .discord-cta h2 {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            position: relative;
+            z-index: 1;
         }
 
         .discord-button {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: #5865F2;
+            background: linear-gradient(135deg, #5865F2, #4752c4);
             color: white;
             padding: 1rem 2rem;
-            border-radius: 5px;
+            border-radius: 999px;
             text-decoration: none;
             margin-top: 1rem;
-            transition: transform 0.3s ease;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            box-shadow: 0 10px 22px rgba(88,101,242,0.28);
+            transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+            position: relative;
+            z-index: 1;
         }
 
         .discord-button:hover {
-            transform: translateY(-2px);
-        }
-
-        .simulation-notice {
-            background: var(--gold);
-            color: var(--simulation-blue);
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 1rem 0;
-            font-weight: bold;
-            text-align: center;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 28px rgba(88,101,242,0.38);
+            filter: brightness(1.05);
         }
 
         footer {
-            background: var(--simulation-blue);
+            background: linear-gradient(180deg, var(--simulation-blue), #132846);
             color: white;
             text-align: center;
-            padding: 2rem;
-            margin-top: 3rem;
+            padding: 2rem 1rem;
+            margin-top: 0;
             border-top: 3px solid var(--gold);
+            font-size: 0.98rem;
         }
 
         .gov-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            gap: 1.5rem;
             margin-top: 1rem;
         }
 
-        .dept-card {
-            padding: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 5px;
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .left-panel {
+            border-right: 2px solid #e7ebf0;
+            padding-right: 2rem;
+        }
+
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .community-item {
             text-align: center;
-            border-left: 3px solid var(--crimson);
+            padding: 1rem;
+            border-radius: 12px;
+            transition: transform var(--transition), background-color var(--transition);
+        }
+
+        .community-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .list-clean {
+            list-style: none;
+        }
+
+        .list-clean li {
+            padding: 0.65rem 0;
+            display: flex;
+            align-items: start;
+            gap: 10px;
+            transition: transform var(--transition);
+        }
+
+        .list-clean li:hover {
+            transform: translateX(4px);
+        }
+
+        .section-divider {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e9edf2;
+        }
+
+        .feature-block {
+            transition: transform var(--transition);
+        }
+
+        .feature-block:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Clickable accordion cards */
+        .accordion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .accordion-card {
+            background: linear-gradient(to bottom right, #ffffff, #f7f9fc);
+            border-radius: 14px;
+            border: 1px solid rgba(0,34,68,0.08);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            position: relative;
+        }
+
+        .accordion-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(212,175,55,0.10), transparent);
+            transition: left 0.7s ease;
+            pointer-events: none;
+        }
+
+        .accordion-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 34px rgba(0,34,68,0.14);
+        }
+
+        .accordion-card:hover::before {
+            left: 120%;
+        }
+
+        .accordion-card summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1.25rem 1.25rem 1rem;
+            position: relative;
+            user-select: none;
+        }
+
+        .accordion-card summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .click-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-top: 0.9rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: var(--simulation-blue);
+            background: rgba(28,46,74,0.08);
+            padding: 0.45rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid rgba(28,46,74,0.08);
+        }
+
+        .click-hint i {
+            transition: transform var(--transition);
+        }
+
+        .accordion-card[open] .click-hint i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            padding: 0 1.25rem 1.25rem;
+            color: var(--navy);
+            animation: fadeDown 0.25s ease;
+            border-top: 1px solid rgba(0,34,68,0.08);
+            background: rgba(248,250,252,0.9);
+        }
+
+        .accordion-content p {
+            margin-top: 0.95rem;
+            font-size: 0.96rem;
+        }
+
+        .accordion-content ul {
+            margin-top: 0.95rem;
+            padding-left: 1.1rem;
+        }
+
+        .accordion-content li {
+            margin-bottom: 0.45rem;
+        }
+
+        /* Department / branch cards as dropdowns */
+        .dept-card {
+            background: linear-gradient(to bottom right, #ffffff, #f7f9fc);
+            border-radius: 14px;
+            border: 1px solid rgba(0,34,68,0.08);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            position: relative;
+        }
+
+        .dept-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(212,175,55,0.12), transparent);
+            transition: left 0.7s ease;
+            pointer-events: none;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 34px rgba(0,34,68,0.14);
+        }
+
+        .dept-card:hover::before {
+            left: 120%;
+        }
+
+        .dept-card summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1.5rem;
+            text-align: center;
+            user-select: none;
+            position: relative;
+        }
+
+        .dept-card summary::-webkit-details-marker {
+            display: none;
         }
 
         .dept-logo {
             height: 60px;
             margin-bottom: 1rem;
             object-fit: contain;
+            transition: transform var(--transition), filter var(--transition);
+        }
+
+        .dept-card:hover .dept-logo {
+            transform: scale(1.06);
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.12));
+        }
+
+        .dept-preview {
+            color: var(--navy);
+            font-size: 0.96rem;
+            margin-top: 0.35rem;
+        }
+
+        .dept-card .click-hint {
+            justify-content: center;
+        }
+
+        .dept-expanded {
+            padding: 0 1.5rem 1.5rem;
+            text-align: left;
+            border-top: 1px solid rgba(0,34,68,0.08);
+            background: rgba(248,250,252,0.95);
+            animation: fadeDown 0.25s ease;
+        }
+
+        .dept-expanded p,
+        .dept-expanded li {
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .dept-expanded p {
+            margin-top: 1rem;
+        }
+
+        .dept-expanded ul {
+            margin-top: 0.85rem;
+            padding-left: 1.1rem;
+        }
+
+        .dept-expanded li {
+            margin-bottom: 0.4rem;
+        }
+
+        .offer-box {
+            margin-top: 2rem;
+            background: linear-gradient(135deg, rgba(212,175,55,0.20), rgba(212,175,55,0.33));
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(152,30,50,0.10);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.45);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bannerSweep {
+            0% {
+                transform: translateX(-120%);
+            }
+            100% {
+                transform: translateX(120%);
+            }
+        }
+
+        @keyframes ctaSweep {
+            0% {
+                transform: translateX(-130%);
+            }
+            100% {
+                transform: translateX(130%);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .split-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .left-panel {
+                border-right: none;
+                padding-right: 0;
+                border-bottom: 2px solid #e7ebf0;
+                padding-bottom: 1.5rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -189,56 +609,72 @@
             .main-title {
                 font-size: 2rem;
             }
+
+            .content-section {
+                margin: 1.25rem 1rem;
+                padding: 1.5rem;
+            }
+
+            .discord-cta {
+                padding: 2.5rem 1rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="simulation-banner">
-        ⚖️ Official Website of R-USA
+        Official Website of rUSA
     </div>
 
     <header class="seal-header">
-        <img src="images/us-seal.png" alt="R-USA Seal" class="official-seal">
+        <img src="images/us-seal.png" alt="rUSA Seal" class="official-seal">
         <h1 class="main-title">Romeo's United States of America</h1>
         <p class="subtitle">A Realistic MockGov Experience</p>
     </header>
 
     <nav class="nav-container">
-    <div class="main-nav">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#structure" class="nav-link">Government</a>
-        <a href="#departments" class="nav-link">Departments</a>
-        <a href="https://docs.google.com/document/d/1bpJ-fLn9AdHJyiXtTSZlO19FMkBs1dBD8V109M1cMcY/edit?tab=t.0" class="nav-link" target="_blank">Our Constitution</a>
-        <a href="https://discord.gg/the-united-states" class="nav-link" target="_blank">Join</a>
-    </div>
-</nav>
+        <div class="main-nav">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#structure" class="nav-link">Government</a>
+            <a href="#departments" class="nav-link">Departments</a>
+            <a href="https://discord.gg/the-united-states" class="nav-link" target="_blank">Join</a>
+        </div>
+    </nav>
 
     <main>
         <section class="content-section" id="about">
-            <div class="simulation-notice">
-                🎭 MockGov Simulation - All content is fictional
-            </div>
-            <h2 style="color: var(--simulation-blue); margin-bottom: 1rem;">About R-USA</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
-                <div style="border-right: 2px solid #eee; padding-right: 2rem;">
-                    <h3 style="color: var(--crimson); margin-bottom: 1rem;">🏛️ Government Structure</h3>
+            <h2 style="color: var(--simulation-blue); margin-bottom: 1rem;">About rUSA</h2>
+
+            <div class="split-grid">
+                <div class="left-panel">
+                    <h3 style="color: var(--crimson); margin-bottom: 1rem;">Government Structure</h3>
                     <p style="color: var(--navy); margin-bottom: 1.5rem;">
-                        Our MockGov features a complete federal government system mirroring real-world counterparts:
+                        Our MockGov features a complete federal government system which accurately mirrors the real-world counterpart:
                     </p>
-                    <ul style="list-style: none;">
-                        <li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 10px;">
+                    <ul class="list-clean">
+                        <li>
                             <span style="color: var(--crimson);">▸</span>
                             <div>
                                 <strong>Three Branch System:</strong> Legislative, Executive, and Judicial branches with checks and balances
                             </div>
                         </li>
-                        <li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 10px;">
+                        <li>
                             <span style="color: var(--crimson);">▸</span>
                             <div>
                                 <strong>15+ Departments/Agencies:</strong> Including State, Defense, Justice, and specialized White House staff positions
                             </div>
                         </li>
-                        <li style="padding: 0.5rem 0; display: flex; align-items: start; gap: 10px;">
+                        <li>
                             <span style="color: var(--crimson);">▸</span>
                             <div>
                                 <strong>Constitutional Framework:</strong> Comprehensive fleshed-out constitution guiding all operations
@@ -246,23 +682,23 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div>
-                    <h3 style="color: var(--crimson); margin-bottom: 1rem;">🌟 Key Features</h3>
+                    <h3 style="color: var(--crimson); margin-bottom: 1rem;">Key Features</h3>
                     <div style="display: grid; gap: 1.5rem;">
-                        <div>
+                        <div class="feature-block">
                             <h4 style="color: var(--navy); margin-bottom: 0.5rem;">📜 Legislative Process</h4>
                             <p style="color: var(--navy); font-size: 0.95rem;">
                                 Full bill drafting and amendment system with committee reviews and floor debates
                             </p>
                         </div>
-                        <div>
+                        <div class="feature-block">
                             <h4 style="color: var(--navy); margin-bottom: 0.5rem;">⚖️ Judicial System</h4>
                             <p style="color: var(--navy); font-size: 0.95rem;">
-                                Supreme Court with full constitutional review
+                                Supreme Court simulations with constitutional review and landmark case recreations
                             </p>
                         </div>
-                        <div>
+                        <div class="feature-block">
                             <h4 style="color: var(--navy); margin-bottom: 0.5rem;">🗳️ Electoral System</h4>
                             <p style="color: var(--navy); font-size: 0.95rem;">
                                 Elections for federal positions every few weeks
@@ -272,20 +708,20 @@
                 </div>
             </div>
 
-            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #eee;">
-                <h3 style="color: var(--simulation-blue); margin-bottom: 1rem;">🌐 Community Ecosystem</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-                    <div style="text-align: center;">
+            <div class="section-divider">
+                <h3 style="color: var(--simulation-blue); margin-bottom: 1rem;">Community Ecosystem</h3>
+                <div class="community-grid">
+                    <div class="community-item">
                         <div style="font-size: 2rem; color: var(--crimson);">👥</div>
                         <h4 style="color: var(--navy);">2000+ Members</h4>
                         <p style="color: var(--navy); font-size: 0.9rem;">Active participants across government roles</p>
                     </div>
-                    <div style="text-align: center;">
+                    <div class="community-item">
                         <div style="font-size: 2rem; color: var(--crimson);">💬</div>
                         <h4 style="color: var(--navy);">Debates</h4>
                         <p style="color: var(--navy); font-size: 0.9rem;">In-character discussions on current issues</p>
                     </div>
-                    <div style="text-align: center;">
+                    <div class="community-item">
                         <div style="font-size: 2rem; color: var(--crimson);">📅</div>
                         <h4 style="color: var(--navy);">Structured Events</h4>
                         <p style="color: var(--navy); font-size: 0.9rem;">Constant sessions & special hearings</p>
@@ -293,147 +729,395 @@
                 </div>
             </div>
 
-            <div style="margin-top: 2rem; background: var(--gold); padding: 1.5rem; border-radius: 5px;">
+            <div class="offer-box">
                 <h3 style="color: var(--simulation-blue); margin-bottom: 1rem;">📌 What We Offer</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="color: var(--crimson);">▸</span>
-                        <span style="color: var(--navy);">Realistic Government RP</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="color: var(--crimson);">▸</span>
-                        <span style="color: var(--navy);">Leadership Development</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="color: var(--crimson);">▸</span>
-                        <span style="color: var(--navy);">Civic Education</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="color: var(--crimson);">▸</span>
-                        <span style="color: var(--navy);">Historical Reenactments</span>
-                    </div>
+                <div class="accordion-grid">
+                    <details class="accordion-card">
+                        <summary>
+                            <div style="display: flex; align-items: center; gap: 10px; color: var(--navy); font-weight: 700;">
+                                <span style="color: var(--crimson);">▸</span>
+                                <span>Realistic Government RP</span>
+                            </div>
+                            <div class="click-hint">
+                                Click to expand <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </summary>
+                        <div class="accordion-content">
+                            <p>
+                                rUSA offers a structured roleplay environment modeled after the federal government of the United States. Members can take part in elections, appointments, hearings, investigations, legislation, executive action, and judicial proceedings within a system designed to feel immersive and authentic.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="accordion-card">
+                        <summary>
+                            <div style="display: flex; align-items: center; gap: 10px; color: var(--navy); font-weight: 700;">
+                                <span style="color: var(--crimson);">▸</span>
+                                <span>Leadership Development</span>
+                            </div>
+                            <div class="click-hint">
+                                Click to expand <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </summary>
+                        <div class="accordion-content">
+                            <p>
+                                Members gain hands-on experience in leadership, communication, public speaking, policy coordination, conflict resolution, and organizational management. Many positions require decision-making under pressure, collaboration with others, and the ability to guide departments or legislative bodies effectively.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="accordion-card">
+                        <summary>
+                            <div style="display: flex; align-items: center; gap: 10px; color: var(--navy); font-weight: 700;">
+                                <span style="color: var(--crimson);">▸</span>
+                                <span>Civic Education</span>
+                            </div>
+                            <div class="click-hint">
+                                Click to expand <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </summary>
+                        <div class="accordion-content">
+                            <p>
+                                Through direct participation, members learn how federal institutions function, how legislation is formed, how executive agencies operate, and how constitutional interpretation shapes government action. The experience helps build a practical understanding of civics far beyond simple observation.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="accordion-card">
+                        <summary>
+                            <div style="display: flex; align-items: center; gap: 10px; color: var(--navy); font-weight: 700;">
+                                <span style="color: var(--crimson);">▸</span>
+                                <span>Historical Reenactments</span>
+                            </div>
+                            <div class="click-hint">
+                                Click to expand <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </summary>
+                        <div class="accordion-content">
+                            <p>
+                                rUSA may feature events inspired by major moments in American political and governmental history, allowing members to step into the roles of leaders, lawmakers, and officials during significant periods of decision-making and national consequence.
+                            </p>
+                        </div>
+                    </details>
                 </div>
             </div>
         </section>
 
         <section class="content-section" id="structure">
-    <h2 style="color: var(--simulation-blue); margin-bottom: 1rem;">Government Structure</h2>
-    <div class="gov-grid">
-        <div class="dept-card">
-            <img src="images/executive.png" alt="Executive Branch Seal" class="dept-logo">
-            <h3 style="color: var(--simulation-blue); margin: 1rem 0;">Executive Branch</h3>
-            <p style="color: var(--navy);">
-                Led by the President. Oversees executive departments, enforces laws, and 
-                conducts foreign policy.
-            </p>
-        </div>
-        <div class="dept-card">
-            <img src="images/legislative.png" alt="Legislative Branch Seal" class="dept-logo">
-            <h3 style="color: var(--simulation-blue); margin: 1rem 0;">Legislative Branch</h3>
-            <p style="color: var(--navy);">
-                Comprised of the Senate and House of Representatives. Responsible for drafting, 
-                debating, and passing legislation.
-            </p>
-        </div>
-        <div class="dept-card">
-            <img src="images/judicial.png" alt="Judicial Branch Seal" class="dept-logo">
-            <h3 style="color: var(--simulation-blue); margin: 1rem 0;">Judicial Branch</h3>
-            <p style="color: var(--navy);">
-                Headed by the Supreme Court. Interprets constitutional matters and settles 
-                legal disputes through trials and judicial review.
-            </p>
-        </div>
-    </div>
-</section>
+            <h2 style="color: var(--simulation-blue); margin-bottom: 1rem;">Government Structure</h2>
+            <div class="gov-grid">
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/executive.png" alt="Executive Branch Seal" class="dept-logo">
+                        <h3 style="color: var(--simulation-blue); margin: 1rem 0 0.6rem;">Executive Branch</h3>
+                        <p class="dept-preview">
+                            Led by the President. Oversees executive departments, enforces laws, and conducts foreign policy.
+                        </p>
+                        <div class="click-hint">
+                            Click to view details <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Executive Branch directs the day-to-day administration of the federal government. It is responsible for enforcing legislation, managing cabinet departments and agencies, issuing executive actions, handling national policy priorities, and representing the nation in domestic and foreign affairs.
+                        </p>
+                        <ul>
+                            <li>Led by the President and supported by executive departments and White House staff</li>
+                            <li>Implements and administers laws passed by the legislature</li>
+                            <li>Coordinates national policy, security, diplomacy, and agency oversight</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/legislative.png" alt="Legislative Branch Seal" class="dept-logo">
+                        <h3 style="color: var(--simulation-blue); margin: 1rem 0 0.6rem;">Legislative Branch</h3>
+                        <p class="dept-preview">
+                            Comprised of the Senate and House of Representatives. Responsible for drafting, debating, and passing legislation.
+                        </p>
+                        <div class="click-hint">
+                            Click to view details <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Legislative Branch serves as the lawmaking body of rUSA. Members introduce bills, debate policy, review amendments, and vote on proposals that shape the direction of government. This branch also provides oversight and serves as a central arena for political negotiation.
+                        </p>
+                        <ul>
+                            <li>Includes both the Senate and House of Representatives</li>
+                            <li>Creates, debates, amends, and passes legislation</li>
+                            <li>Acts as a major check on executive authority</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/judicial.png" alt="Judicial Branch Seal" class="dept-logo">
+                        <h3 style="color: var(--simulation-blue); margin: 1rem 0 0.6rem;">Judicial Branch</h3>
+                        <p class="dept-preview">
+                            Headed by the Supreme Court. Interprets constitutional matters and settles legal disputes through trials and judicial review.
+                        </p>
+                        <div class="click-hint">
+                            Click to view details <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Judicial Branch interprets the Constitution, reviews disputes, and ensures that laws and government actions remain consistent with the governing legal framework of rUSA. Its role is vital in settling disputes, clarifying constitutional questions, and protecting the integrity of the system.
+                        </p>
+                        <ul>
+                            <li>Led by the Supreme Court and supported by judicial officers</li>
+                            <li>Conducts constitutional review and legal interpretation</li>
+                            <li>Resolves disputes through hearings, rulings, and formal decisions</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
 
         <section class="content-section" id="departments">
             <h2 style="color: var(--simulation-blue); margin-bottom: 1rem;">Government Departments</h2>
             <div class="gov-grid">
-                <div class="dept-card">
-                    <img src="images/dos.png" alt="State Department" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of State</h3>
-                    <p style="color: var(--navy);">Manages diplomatic relations and international affairs</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/dod.png" alt="Defense Department" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of Defense</h3>
-                    <p style="color: var(--navy);">Oversees the Military and works with DHS and FBI to protect National Security</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/dhs.png" alt="Homeland Security" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of Homeland Security</h3>
-                    <p style="color: var(--navy);">Oversees border enforcement, internal security, and the safety of the citizens. Functions under the Department of Justice.</p>
-                </div>
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/dos.png" alt="State Department" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of State</h3>
+                        <p class="dept-preview">Manages diplomatic relations and international affairs</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Department of State manages foreign relations, diplomatic engagement, and international coordination on behalf of the administration.
+                        </p>
+                        <ul>
+                            <li>Represents national interests abroad</li>
+                            <li>Handles diplomacy, negotiations, and intergovernmental communication</li>
+                            <li>Advises on foreign policy matters</li>
+                        </ul>
+                    </div>
+                </details>
 
-                <div class="dept-card">
-                    <img src="images/cia.png" alt="CIA" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">CIA</h3>
-                    <p style="color: var(--navy);">Conducts intelligence gathering and analysis on Foreign Assets</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/doj.png" alt="Justice Department" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of Justice</h3>
-                    <p style="color: var(--navy);">Enforces laws and oversees legal proceedings</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/fbi.png" alt="FBI" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">FBI</h3>
-                    <p style="color: var(--navy);">Investigates federal crimes and domestic threats within the Nation. Functions under the Department of Justice</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/doi.png" alt="Interior Department" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of the Interior</h3>
-                    <p style="color: var(--navy);">Monitors and maintains activity within the nation and handles recruitment for departments when needed</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/doe.png" alt="Education Department" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of Education</h3>
-                    <p style="color: var(--navy);">Oversees Harvard University, managing academic policy, admissions standards, and federal education initiatives.</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/dot.png" alt="Treasury Department" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of the Treasury</h3>
-                    <p style="color: var(--navy);">Manages government revenue, economic policy, and financial systems</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/fedreserve.png" alt="Federal Reserve" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Federal Reserve</h3>
-                    <p style="color: var(--navy);">Conducts monetary policy to promote maximum employment, stable prices, and moderate long-term interest rates</p>
-                </div>
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/dod.png" alt="Defense Department" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of Defense</h3>
+                        <p class="dept-preview">Oversees the Military and works with DHS and FBI to protect National Security</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Department of Defense oversees military readiness, defense planning, and strategic protection of national interests.
+                        </p>
+                        <ul>
+                            <li>Manages military structure and preparedness</li>
+                            <li>Coordinates with other security agencies on threats</li>
+                            <li>Supports national defense and response operations</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/dhs.png" alt="Homeland Security" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of Homeland Security</h3>
+                        <p class="dept-preview">Manages border security and the welfare of the Nation. Works under the Department of Justice</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Department of Homeland Security focuses on internal security, border integrity, emergency coordination, and protection of the nation from domestic vulnerabilities.
+                        </p>
+                        <ul>
+                            <li>Oversees homeland preparedness and protective measures</li>
+                            <li>Supports border and internal security efforts</li>
+                            <li>Works closely with justice and intelligence entities</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/cia.png" alt="CIA" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">CIA</h3>
+                        <p class="dept-preview">Conducts intelligence gathering and analysis on Foreign Assets</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Central Intelligence Agency is responsible for foreign intelligence collection, analysis, and strategic assessment in support of executive decision-making.
+                        </p>
+                        <ul>
+                            <li>Monitors foreign actors and developments</li>
+                            <li>Produces intelligence assessments for leadership</li>
+                            <li>Helps inform national security and foreign policy decisions</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/doj.png" alt="Justice Department" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of Justice</h3>
+                        <p class="dept-preview">Enforces laws and oversees legal proceedings</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Department of Justice is responsible for federal law enforcement, legal administration, prosecutorial oversight, and maintaining rule of law across the nation.
+                        </p>
+                        <ul>
+                            <li>Coordinates legal enforcement and prosecutions</li>
+                            <li>Oversees justice-related agencies and investigations</li>
+                            <li>Supports lawful order and accountability</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/fbi.png" alt="FBI" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">FBI</h3>
+                        <p class="dept-preview">Investigates federal crimes and domestic threats within the Nation. Works under the Department of Justice</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Federal Bureau of Investigation handles major federal investigations, domestic security concerns, and coordinated threat response within the nation.
+                        </p>
+                        <ul>
+                            <li>Investigates serious federal criminal matters</li>
+                            <li>Addresses domestic threats and national security concerns</li>
+                            <li>Works within the justice framework under DOJ oversight</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/doi.png" alt="Interior Department" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Department of the Interior</h3>
+                        <p class="dept-preview">Monitors and maintains activity within the nation and handles recruitment for departments</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Department of the Interior helps maintain domestic operational stability and supports the broader administrative structure of the government.
+                        </p>
+                        <ul>
+                            <li>Monitors internal activity and national administration</li>
+                            <li>Supports recruitment and staffing needs</li>
+                            <li>Helps maintain continuity across departments</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/fedreserve.png" alt="Federal Reserve" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Federal Reserve</h3>
+                        <p class="dept-preview">Conducts monetary policy to promote maximum employment, stable prices, and moderate long-term interest rates</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Federal Reserve oversees monetary policy and the broader financial direction of the nation’s economy.
+                        </p>
+                        <ul>
+                            <li>Guides monetary policy and economic stability</li>
+                            <li>Addresses inflation, employment, and long-term rates</li>
+                            <li>Provides financial oversight and strategic economic direction</li>
+                        </ul>
+                    </div>
+                </details>
             </div>
 
-            <h3 style="color: var(--simulation-blue); margin: 2rem 0 1rem;">White House Staff</h3>
+            <h3 style="color: var(--simulation-blue); margin: 2rem 0 1rem; font-family: 'Merriweather', serif;">White House Staff</h3>
             <div class="gov-grid">
-                <div class="dept-card">
-                    <img src="images/whitehouse.png" alt="White House" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Chief of Staff</h3>
-                    <p style="color: var(--navy);">Oversees White House operations and advises the President</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/whitehouse.png" alt="White House" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Senior Advisor to the President</h3>
-                    <p style="color: var(--navy);">Provides strategic guidance on key policy initiatives</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/whitehouse.png" alt="White House" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Senior Advisor on Government Efficiency</h3>
-                    <p style="color: var(--navy);">Oversees streamlining of government operations</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/whitehouse.png" alt="White House" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Press Secretary</h3>
-                    <p style="color: var(--navy);">Manages White House communications and media relations</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/whitehouse.png" alt="White House" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Special Advisor on House Affairs</h3>
-                    <p style="color: var(--navy);">Liaison between President and House of Representatives</p>
-                </div>
-                <div class="dept-card">
-                    <img src="images/whitehouse.png" alt="White House" class="dept-logo">
-                    <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Special Advisor on Senate Affairs</h3>
-                    <p style="color: var(--navy);">Liaison between President and Senate</p>
-                </div>
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/whitehouse.png" alt="White House" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Chief of Staff</h3>
+                        <p class="dept-preview">Oversees White House operations and advises the President</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Chief of Staff manages White House workflow, coordinates executive priorities, and serves as one of the President’s principal organizational advisors.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/whitehouse.png" alt="White House" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Senior Advisor to the President</h3>
+                        <p class="dept-preview">Provides strategic guidance on key policy initiatives</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            This role provides high-level counsel to the President on major priorities, political strategy, and long-range executive objectives.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/whitehouse.png" alt="White House" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Senior Advisor on Government Efficiency</h3>
+                        <p class="dept-preview">Oversees streamlining of government operations</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            This advisor focuses on improving administrative performance, reducing inefficiency, and helping the executive branch operate more effectively.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/whitehouse.png" alt="White House" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Press Secretary</h3>
+                        <p class="dept-preview">Manages White House communications and media relations</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            The Press Secretary serves as the primary public communications voice of the White House and manages messaging to the broader community.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/whitehouse.png" alt="White House" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Special Advisor on House Affairs</h3>
+                        <p class="dept-preview">Liaison between President and House of Representatives</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            This advisor helps coordinate executive relations with the House of Representatives, supports legislative strategy, and maintains communication with House leadership.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="dept-card">
+                    <summary>
+                        <img src="images/whitehouse.png" alt="White House" class="dept-logo">
+                        <h3 style="color: var(--crimson); margin-bottom: 0.5rem;">Special Advisor on Senate Affairs</h3>
+                        <p class="dept-preview">Liaison between President and Senate</p>
+                        <div class="click-hint">Click to view details <i class="fas fa-chevron-down"></i></div>
+                    </summary>
+                    <div class="dept-expanded">
+                        <p>
+                            This advisor serves as the executive branch point of contact with the Senate, supporting negotiations, communication, and legislative coordination.
+                        </p>
+                    </div>
+                </details>
             </div>
         </section>
 
@@ -448,9 +1132,8 @@
     </main>
 
     <footer>
-        <p>© 2025 Romeo's United States of America</p>
-        <p style="margin-top: 1rem;">
-        </p>
+        <p>© 2026 Romeo's United States of America</p>
+        <p style="margin-top: 1rem;"></p>
     </footer>
 </body>
 </html>
